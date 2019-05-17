@@ -4,4 +4,5 @@ spring.servlet.multipart:
   max-file-size: 512KB
   max-request-size: 512KB
 
-storage.location: plugins
+plugin.location: plugins
+storage.location: ${plugin.location}

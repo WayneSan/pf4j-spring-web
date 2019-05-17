@@ -1,1 +1,7 @@
+server.port: 8888
 
+spring.servlet.multipart:
+  max-file-size: 512KB
+  max-request-size: 512KB
+
+storage.location: plugins

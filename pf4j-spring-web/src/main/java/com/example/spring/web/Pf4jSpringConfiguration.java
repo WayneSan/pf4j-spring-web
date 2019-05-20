@@ -2,7 +2,7 @@ package com.example.spring.web;
 
 import java.nio.file.Paths;
 
-import com.example.spring.web.model.Plugin;
+import com.example.spring.web.model.PluginResponse;
 import com.example.spring.web.properties.PluginProperties;
 import com.example.spring.web.properties.StorageProperties;
 import com.example.spring.web.service.StorageService;
@@ -34,7 +34,7 @@ public class Pf4jSpringConfiguration {
     @Bean
     OrikaMapperFactoryConfigurer orikaMapper() {
         return orikaMapperFactory -> {
-            orikaMapperFactory.classMap(PluginWrapper.class, Plugin.class)
+            orikaMapperFactory.classMap(PluginWrapper.class, PluginResponse.class)
                     .fieldAToB("descriptor.pluginId", "id")
                     .fieldAToB("descriptor.pluginDescription", "description")
                     .fieldAToB("descriptor.pluginClass", "pluginClass")

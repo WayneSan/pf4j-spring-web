@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.example.spring.web.exception.PluginNotFoundException;
 import com.example.spring.web.exception.ServiceRuntimeException;
-import com.example.spring.web.model.Plugin;
+import com.example.spring.web.model.PluginResponse;
 import com.example.spring.web.service.PluginService;
 import ma.glasnost.orika.MapperFacade;
 import org.pf4j.PluginState;
@@ -33,22 +33,22 @@ public class PluginController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Plugin> getAll() {
-        return mapperFacade.mapAsList(pluginService.getAll(), Plugin.class);
+    public List<PluginResponse> getAll() {
+        return mapperFacade.mapAsList(pluginService.getAll(), PluginResponse.class);
     }
 
     @GetMapping(value = "state/{pluginState}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Plugin> getByState(@PathVariable PluginState pluginState) {
-        return mapperFacade.mapAsList(pluginService.getByState(pluginState), Plugin.class);
+    public List<PluginResponse> getByState(@PathVariable PluginState pluginState) {
+        return mapperFacade.mapAsList(pluginService.getByState(pluginState), PluginResponse.class);
     }
 
     @GetMapping(value = "{pluginId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Plugin get(@PathVariable String pluginId) {
-        return mapperFacade.map(pluginService.get(pluginId), Plugin.class);
+    public PluginResponse get(@PathVariable String pluginId) {
+        return mapperFacade.map(pluginService.get(pluginId), PluginResponse.class);
     }
 
     @PutMapping(value = "{pluginId}/{operation}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Plugin operation(@PathVariable String pluginId, @PathVariable String operation) {
+    public PluginResponse operation(@PathVariable String pluginId, @PathVariable String operation) {
         try {
             switch (operation.toLowerCase()) {
                 case "start":
@@ -69,7 +69,7 @@ public class PluginController {
         } catch (IllegalArgumentException e) {
             throw new PluginNotFoundException("Plugin [" + pluginId + "] not found!!", e);
         }
-        return mapperFacade.map(pluginService.get(pluginId), Plugin.class);
+        return mapperFacade.map(pluginService.get(pluginId), PluginResponse.class);
     }
 
     @DeleteMapping(value = "{pluginId}", produces = MediaType.APPLICATION_JSON_VALUE)

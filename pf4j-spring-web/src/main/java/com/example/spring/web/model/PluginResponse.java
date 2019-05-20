@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class Plugin {
+public class PluginResponse {
     private String id;
     private String description;
     @JsonProperty("class")

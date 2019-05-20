@@ -3,6 +3,8 @@ package com.example.spring.web.service;
 import java.nio.file.Path;
 import java.util.List;
 
+import com.example.spring.web.exception.PluginNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.pf4j.PluginManager;
 import org.pf4j.PluginState;
 import org.pf4j.PluginWrapper;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Service
 public class PluginServiceImpl implements PluginService {
 
@@ -36,12 +39,17 @@ public class PluginServiceImpl implements PluginService {
 
     @Override
     public PluginWrapper get(String pluginId) {
-        return pluginManager.getPlugin(pluginId);
+        PluginWrapper plugin = pluginManager.getPlugin(pluginId);
+        if (plugin == null) {
+            log.warn("Plugin [" + pluginId + "] not found!!");
+            throw new PluginNotFoundException("Plugin [" + pluginId + "] not found!!");
+        }
+        return plugin;
     }
 
     @Override
-    public void installPlugin(MultipartFile file) {
+    public String installPlugin(MultipartFile file) {
         Path plugin = storageService.store(file);
-        pluginManager.loadPlugin(plugin);
+        return pluginManager.loadPlugin(plugin);
     }
 }

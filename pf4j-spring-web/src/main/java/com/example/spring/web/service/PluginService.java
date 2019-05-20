@@ -14,5 +14,5 @@ public interface PluginService {
 
     PluginWrapper get(String pluginId);
 
-    void installPlugin(MultipartFile file);
+    String installPlugin(MultipartFile file);
 }

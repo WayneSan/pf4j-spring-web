@@ -1,9 +1,10 @@
 package com.example.spring.web.controller;
 
+import java.net.URI;
+
 import com.example.spring.web.service.PluginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @Slf4j
 @Controller
@@ -27,7 +29,15 @@ public class PluginUploadController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity handlePluginUpload(@RequestParam("file") MultipartFile file) {
         log.info("Uploading file: {}", file.getOriginalFilename());
-        pluginService.installPlugin(file);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        String pluginId = pluginService.installPlugin(file);
+        return ResponseEntity.created(buildUri(pluginId)).build();
+    }
+
+    private URI buildUri(String pluginId) {
+        return ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{pluginId}")
+                .buildAndExpand(pluginId)
+                .toUri();
     }
 }

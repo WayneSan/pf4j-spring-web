@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import com.example.spring.web.exception.PluginNotFoundException;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.pf4j.PluginManager;
 import org.pf4j.PluginState;
@@ -17,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class PluginServiceImpl implements PluginService {
 
     private StorageService storageService;
+
+    @Getter
     private PluginManager pluginManager;
 
     @Autowired
@@ -50,6 +53,17 @@ public class PluginServiceImpl implements PluginService {
     @Override
     public String installPlugin(MultipartFile file) {
         Path plugin = storageService.store(file);
-        return pluginManager.loadPlugin(plugin);
+        String pluginId = pluginManager.loadPlugin(plugin);
+        pluginManager.startPlugin(pluginId);
+        return pluginId;
+    }
+
+    @Override
+    public boolean uninstallPlugin(String pluginId) {
+        try {
+            return pluginManager.deletePlugin(pluginId);
+        } catch (IllegalArgumentException e) {
+            throw new PluginNotFoundException("Plugin [" + pluginId + "] not found!!", e);
+        }
     }
 }

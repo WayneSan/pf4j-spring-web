@@ -1,4 +1,3 @@
-import static ch.qos.logback.classic.Level.DEBUG
 import static ch.qos.logback.classic.Level.INFO
 
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder
@@ -40,5 +39,7 @@ root(logLevel, appenderNames)
 logger("com.example", logLevel, ["DEMO_CONSOLE"], false)
 
 logger("org.pf4j", logLevel, ["PF4J_CONSOLE"], false)
-logger("org.pf4j.PluginClassLoader", DEBUG, ["PF4J_CONSOLE"], false)
-logger("org.pf4j.AbstractExtensionFinder", DEBUG, ["PF4J_CONSOLE"], false)
+// !!! Put the bellow classes on level TRACE when you are in trouble
+logger("org.pf4j.PluginClassLoader", TRACE, ["PF4J_CONSOLE"], false)
+logger("org.pf4j.AbstractPluginManager", TRACE, ["PF4J_CONSOLE"], false)
+logger("org.pf4j.AbstractExtensionFinder", TRACE, ["PF4J_CONSOLE"], false)

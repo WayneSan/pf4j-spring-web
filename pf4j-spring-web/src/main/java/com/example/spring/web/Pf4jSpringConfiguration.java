@@ -20,7 +20,7 @@ public class Pf4jSpringConfiguration {
     @Bean
     StorageService storageService(StorageProperties properties) {
         StorageService storageService = new StorageServiceImpl(properties);
-        storageService.deleteAll();
+//        storageService.deleteAll();
         storageService.init();
         return storageService;
     }
